@@ -85,7 +85,7 @@ export class NoteService {
     const archivedCounter = archived.reduce(
       (acc: { [key: string]: number }, { category }) => ({
         ...acc,
-        [category]: ++acc.category || 1,
+        [category]: ++acc[category] || 1,
       }),
       {},
     );

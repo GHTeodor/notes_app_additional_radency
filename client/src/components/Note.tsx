@@ -25,7 +25,7 @@ const Note: FC<IProps> = ({note, isArchived}) => {
             <TableCell>{created}</TableCell>
             <TableCell>{category}</TableCell>
             <TableCell>{content}</TableCell>
-            <TableCell>{dates.join(', ')}</TableCell>
+            <TableCell>{dates.map(({date}) => date).join(', ')}</TableCell>
             {
                 !isArchived
                     ?

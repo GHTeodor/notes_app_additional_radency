@@ -11,7 +11,7 @@ import {
 import {DoneOutline, Close, EditNote} from '@mui/icons-material';
 import dayjs from "dayjs";
 
-import {INote} from "../../interfaces";
+import {INote, INoteDTO} from "../../interfaces";
 import {useAppDispatch} from "../../hooks";
 import useInput from "../../hooks/input.hook";
 import {noteActions} from "../../redux/slice";
@@ -40,15 +40,13 @@ const NoteFormModal: FC<IProps> = ({note}) => {
     const {reset: resetDates, ...selectedDate} = useInput();
 
     const create = () => {
-        const currentDate = dayjs().format("MMMM D, YYYY");
+        const date = dayjs(selectedDate?.value).format("DD/MM/YYYY");
 
-        const newNote = {
-            id: Math.random(),
+        const newNote: INoteDTO = {
             name: name.value,
             category: category.value,
             content: content.value,
-            created: currentDate,
-            dates: [],
+            dates: [date],
         };
 
         dispatch(noteActions.create({note: newNote}));
@@ -56,13 +54,12 @@ const NoteFormModal: FC<IProps> = ({note}) => {
 
     const edit = (note: INote) => {
         const date = dayjs(selectedDate?.value).format("DD/MM/YYYY");
-        const dates = selectedDate.value ? [...note.dates, date] : [...note.dates];
 
-        const editNote = {
+        const editNote: INoteDTO = {
             ...note,
             name: name.value,
             content: content.value,
-            dates,
+            dates: [date],
         };
 
         dispatch(noteActions.update({note: editNote, id: note.id}));
@@ -142,7 +139,8 @@ const NoteFormModal: FC<IProps> = ({note}) => {
                 <DialogContent>
                     <form onSubmit={handleSubmit}>
                         <FormControl fullWidth error={Boolean(error)}>
-                            {error && <FormHelperText sx={{maxWidth: '300px', wordWrap: "break-word"}}>{error}</FormHelperText>}
+                            {error && <FormHelperText
+                                sx={{maxWidth: '300px', wordWrap: "break-word"}}>{error}</FormHelperText>}
                         </FormControl>
 
                         <FormControl fullWidth>
@@ -182,20 +180,18 @@ const NoteFormModal: FC<IProps> = ({note}) => {
                             />
                         </FormControl>
 
-                        {note &&
-                            <FormControl fullWidth>
-                                <TextField
-                                    label="Select Date"
-                                    type="date"
-                                    fullWidth
-                                    margin="normal"
-                                    {...selectedDate}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </FormControl>
-                        }
+                        <FormControl fullWidth>
+                            <TextField
+                                label="Select Date"
+                                type="date"
+                                fullWidth
+                                margin="normal"
+                                {...selectedDate}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </FormControl>
 
                         <input type="submit" ref={buttonSubmitRef} hidden/>
                     </form>

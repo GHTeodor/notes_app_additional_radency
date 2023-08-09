@@ -4,5 +4,16 @@ export interface INote {
     created: string,
     category: string,
     content: string,
-    dates: string[],
+    dates: IDate[],
+}
+
+export interface INoteDTO {
+    name: string,
+    category: string,
+    content: string,
+    dates: [string],
+}
+
+interface IDate {
+    date: string;
 }
