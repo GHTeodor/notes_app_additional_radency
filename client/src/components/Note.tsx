@@ -6,7 +6,7 @@ import {INote} from "../interfaces";
 import {useAppDispatch} from "../hooks";
 import {noteActions} from "../redux/slice";
 import NoteFormModal from "./Modals/NoteFormModal";
-import styles from "./styles.module.scss";
+import dayjs from 'dayjs';
 
 interface IProps {
     note: INote;
@@ -15,17 +15,18 @@ interface IProps {
 }
 
 const Note: FC<IProps> = ({note, isArchived}) => {
-    const {id, name, category, content, created, dates} = note;
+    const {id, name, category, content, createdAt, dates} = note;
+    const created = dayjs(createdAt).format('MMMM DD, YYYY');
 
     const dispatch = useAppDispatch();
 
     return (
-        <TableRow className={styles.rows}>
+        <TableRow className="border-4 border-white rounded-lg hover:border-slate-400 hover:bg-slate-300">
             <TableCell>{name}</TableCell>
             <TableCell>{created}</TableCell>
             <TableCell>{category}</TableCell>
             <TableCell>{content}</TableCell>
-            <TableCell>{dates.join(', ')}</TableCell>
+            <TableCell>{dates.map(({date}) => date).join(', ')}</TableCell>
             {
                 !isArchived
                     ?

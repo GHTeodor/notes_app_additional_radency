@@ -8,7 +8,6 @@ import NoteFormModal from "./Modals/NoteFormModal";
 import {theadSummary} from "../constants";
 import {SummaryTBody} from "./SummaryTBody";
 import {INote} from "../interfaces";
-import styles from "./styles.module.scss";
 
 interface IProps {
     thead: string[];
@@ -22,22 +21,28 @@ const NotesTable: FC<IProps> = ({thead: keysList, isArchived = false}) => {
     const isSummary: boolean = keysList.length === theadSummary.length;
 
     return (
-        <div className={styles.container}>
+        <div className="w-full">
             <Paper>
                 <TableContainer>
-                    <Table>
-                        <TableHead>
+                    <Table className="table-auto">
+                        <TableHead className="bg-gradient-to-r from-gray-500 to-gray-400 border-4 border-white">
                             <TableRow>
-                                {keysList.map((k, i) => <TableCell key={i}>
-                                    {k
-                                        ? k
-                                        : isArchived ? <Unarchive/> : <div className={styles.dFlexEnd}><Archive/> <DeleteForever/></div>}
-                                </TableCell>)}
+                                {keysList.map((k, i) =>
+                                    <TableCell key={i}>
+                                        {k
+                                            ? k
+                                            : isArchived ? <Unarchive/> :
+                                                <div className="flex justify-end items-center">
+                                                    <Archive/> <DeleteForever/>
+                                                </div>}
+                                    </TableCell>
+                                )}
                             </TableRow>
                         </TableHead>
 
 
-                        <TableBody>
+                        {/*<TableBody style={{backgroundColor: "lightgray"}}>*/}
+                        <TableBody className="bg-gradient-to-tr from-slate-400 to-gray-200">
                             {
                                 (isSummary)
                                     ? <SummaryTBody/>

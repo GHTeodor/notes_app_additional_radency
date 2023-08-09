@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, isFulfilled} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 
-import {INote, IStatistic} from "../../interfaces";
+import {INote, INoteDTO, IStatistic} from "../../interfaces";
 import {noteService} from "../../services/note.service";
 
 interface IState {
@@ -25,8 +25,8 @@ const getAll = createAsyncThunk<INote[], void>(
     'noteSlice/getAll',
     async (_, {rejectWithValue}) => {
         try {
-            const {data} = await noteService.getAll();
-            return data;
+            const {data: {active}} = await noteService.getAll();
+            return active;
         } catch (e) {
             const err = e as AxiosError;
             return rejectWithValue(err.response?.data);
@@ -34,7 +34,7 @@ const getAll = createAsyncThunk<INote[], void>(
     }
 );
 
-const create = createAsyncThunk<void, { note: INote; }>(
+const create = createAsyncThunk<void, { note: INoteDTO; }>(
     'noteSlice/create',
     async ({note}, {rejectWithValue}) => {
         try {
@@ -46,7 +46,7 @@ const create = createAsyncThunk<void, { note: INote; }>(
     }
 );
 
-const update = createAsyncThunk<void, { note: INote, id: number; }>(
+const update = createAsyncThunk<void, { note: INoteDTO, id: number; }>(
     'noteSlice/update',
     async ({id, note}, {rejectWithValue}) => {
         try {
@@ -87,8 +87,8 @@ const getAllArchived = createAsyncThunk<INote[], void>(
     'noteSlice/getAllArchived',
     async (_, {rejectWithValue}) => {
         try {
-            const {data} = await noteService.getAllArchived();
-            return data;
+            const {data: {archived}} = await noteService.getAll();
+            return archived;
         } catch (e) {
             const err = e as AxiosError;
             return rejectWithValue(err.response?.data);

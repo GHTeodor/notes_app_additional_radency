@@ -15,15 +15,16 @@ const SummaryTBody: FC<IProps> = () => {
 
     return (
         <>
-            {keys.map((key) => <TableRow key={key}>
-                <TableCell>{key}</TableCell>
-                <TableCell>{active[key]}</TableCell>
-                <TableCell>
-                    <Button variant="text" onClick={()=>dispatch(noteActions.setCategory(key))}>
-                        <ArchivedListModal quantity={archived[key]}/>
-                    </Button>
-                </TableCell>
-            </TableRow>)}
+            {keys.map((key) =>
+                <TableRow key={key} className="border-4 border-white hover:border-slate-400 hover:bg-slate-300">
+                    <TableCell>{key}</TableCell>
+                    <TableCell>{active[key]}</TableCell>
+                    <TableCell>
+                        <Button variant="text" onClick={() => dispatch(noteActions.setCategory(key))}>
+                            <ArchivedListModal quantity={archived[key]}/>
+                        </Button>
+                    </TableCell>
+                </TableRow>)}
         </>
     );
 };
