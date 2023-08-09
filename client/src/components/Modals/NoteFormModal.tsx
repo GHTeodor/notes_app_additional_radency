@@ -16,7 +16,6 @@ import {useAppDispatch} from "../../hooks";
 import useInput from "../../hooks/input.hook";
 import {noteActions} from "../../redux/slice";
 import Transition from "./Transition";
-import styles from "../styles.module.scss";
 
 interface IProps {
     note?: INote;
@@ -115,18 +114,19 @@ const NoteFormModal: FC<IProps> = ({note}) => {
             resetName();
             resetContent();
             resetCategory();
-
-            if (note) resetDates();
+            resetDates();
 
             handleClose();
         }
     };
 
     return (
-        <div className={styles.createNoteButton}>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                {note ? <EditNote/> : "Create Note"}
-            </Button>
+        <div className="flex justify-end m-2.5">
+            {
+                !note
+                    ? <Button variant="contained" onClick={handleClickOpen}> Create Note</Button>
+                    : <Button variant="outlined" onClick={handleClickOpen}><EditNote/></Button>
+            }
 
             <Dialog
                 open={open}
@@ -135,26 +135,30 @@ const NoteFormModal: FC<IProps> = ({note}) => {
                 onClose={handleClose}
                 maxWidth="xl"
             >
-                <DialogTitle>{note ? "Create New" : "Edit"} Note</DialogTitle>
-                <DialogContent>
-                    <form onSubmit={handleSubmit}>
-                        <FormControl fullWidth error={Boolean(error)}>
-                            {error && <FormHelperText
-                                sx={{maxWidth: '300px', wordWrap: "break-word"}}>{error}</FormHelperText>}
+                <DialogTitle className="bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%">
+                    <span className="font-extrabold text-transparent text-5xl bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+                        {!note ? "Create New" : "Edit"} Note
+                    </span>
+                </DialogTitle>
+                <DialogContent className="bg-gradient-to-tr from-slate-200 to-gray-100">
+                    <form onSubmit={handleSubmit} className="bg-gradient-to-tr from-slate-100 to-orange-100 p-1 rounded-lg">
+                        <FormControl fullWidth className="m-2.5" error={Boolean(error)}>
+                            {error &&
+                                <FormHelperText className="max-w-[300px] break-words">
+                                    {error}
+                                </FormHelperText>}
                         </FormControl>
 
-                        <FormControl fullWidth>
+                        <FormControl fullWidth className="m-2.5">
                             <TextField
                                 label="Name"
                                 variant="outlined"
                                 margin="normal"
                                 {...name}
-                                aria-describedby="name-helper-text"
                             />
                         </FormControl>
 
-
-                        <FormControl fullWidth>
+                        <FormControl fullWidth className="m-2.5">
                             <InputLabel id="demo-simple-select-label">Category</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -170,7 +174,7 @@ const NoteFormModal: FC<IProps> = ({note}) => {
                             </Select>
                         </FormControl>
 
-                        <FormControl fullWidth>
+                        <FormControl fullWidth className="m-2.5">
                             <TextField
                                 label="Content"
                                 variant="outlined"
@@ -180,7 +184,7 @@ const NoteFormModal: FC<IProps> = ({note}) => {
                             />
                         </FormControl>
 
-                        <FormControl fullWidth>
+                        <FormControl fullWidth className="m-2.5">
                             <TextField
                                 label="Select Date"
                                 type="date"
@@ -196,7 +200,7 @@ const NoteFormModal: FC<IProps> = ({note}) => {
                         <input type="submit" ref={buttonSubmitRef} hidden/>
                     </form>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions className="bg-gradient-to-bl from-indigo-200 from-10% via-sky-200 via-30% to-emerald-200 to-90%">
                     <Button type="reset" onClick={handleClose}><Close/></Button>
                     <Button type="reset" onClick={buttonRefClick}><DoneOutline/></Button>
                 </DialogActions>
