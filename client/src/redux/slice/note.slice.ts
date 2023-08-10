@@ -21,12 +21,12 @@ const initialState: IState = {
     archived: [],
 };
 
-const getAll = createAsyncThunk<INote[], void>(
+const getAll = createAsyncThunk<{active: INote[], archived: INote[]}, void>(
     'noteSlice/getAll',
     async (_, {rejectWithValue}) => {
         try {
-            const {data: {active}} = await noteService.getAll();
-            return active;
+            const {data} = await noteService.getAll();
+            return data;
         } catch (e) {
             const err = e as AxiosError;
             return rejectWithValue(err.response?.data);
@@ -83,19 +83,6 @@ const statistics = createAsyncThunk<IStatistic, void>(
     }
 );
 
-const getAllArchived = createAsyncThunk<INote[], void>(
-    'noteSlice/getAllArchived',
-    async (_, {rejectWithValue}) => {
-        try {
-            const {data: {archived}} = await noteService.getAll();
-            return archived;
-        } catch (e) {
-            const err = e as AxiosError;
-            return rejectWithValue(err.response?.data);
-        }
-    }
-);
-
 const archive = createAsyncThunk<void, {id: number}>(
     'noteSlice/archive',
     async ({id}, {rejectWithValue}) => {
@@ -131,10 +118,8 @@ const slice = createSlice({
     extraReducers: builder =>
         builder
             .addCase(getAll.fulfilled, (state, action) => {
-                state.notes = action.payload;
-            })
-            .addCase(getAllArchived.fulfilled, (state, action) => {
-                state.archived = action.payload;
+                state.notes = action.payload.active;
+                state.archived = action.payload.archived;
             })
             .addCase(statistics.fulfilled, (state, action) => {
                 state.statistics = action.payload;
@@ -155,7 +140,6 @@ const noteActions = {
     statistics,
     archive,
     unarchive,
-    getAllArchived,
 };
 
 export {

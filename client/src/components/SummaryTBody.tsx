@@ -4,6 +4,7 @@ import {Button, TableCell, TableRow} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {ArchivedListModal} from "./Modals/ArchivedList";
 import {noteActions} from "../redux/slice";
+import {Icons} from "./Icons";
 
 interface IProps {
 
@@ -17,7 +18,7 @@ const SummaryTBody: FC<IProps> = () => {
         <>
             {keys.map((key) =>
                 <TableRow key={key} className="border-4 border-white hover:border-slate-400 hover:bg-slate-300">
-                    <TableCell>{key}</TableCell>
+                    <TableCell><Icons category={key}/>|{key}</TableCell>
                     <TableCell>{active[key]}</TableCell>
                     <TableCell>
                         <Button variant="text" onClick={() => dispatch(noteActions.setCategory(key))}>

@@ -41,7 +41,6 @@ const NotesTable: FC<IProps> = ({thead: keysList, isArchived = false}) => {
                         </TableHead>
 
 
-                        {/*<TableBody style={{backgroundColor: "lightgray"}}>*/}
                         <TableBody className="bg-gradient-to-tr from-slate-400 to-gray-200">
                             {
                                 (isSummary)
