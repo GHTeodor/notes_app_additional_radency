@@ -12,7 +12,6 @@ function App() {
 
     useEffect(() => {
         dispatch(noteActions.getAll());
-        dispatch(noteActions.getAllArchived());
         dispatch(noteActions.statistics());
     }, [dispatch, trigger]);
 

@@ -1,12 +1,13 @@
 import React, {FC} from 'react';
 import {Archive, DeleteForever, Unarchive} from '@mui/icons-material';
 import {Button, TableCell, TableRow} from "@mui/material";
+import dayjs from 'dayjs';
 
 import {INote} from "../interfaces";
 import {useAppDispatch} from "../hooks";
 import {noteActions} from "../redux/slice";
 import NoteFormModal from "./Modals/NoteFormModal";
-import dayjs from 'dayjs';
+import {Icons} from "./Icons";
 
 interface IProps {
     note: INote;
@@ -22,6 +23,7 @@ const Note: FC<IProps> = ({note, isArchived}) => {
 
     return (
         <TableRow className="border-4 border-white rounded-lg hover:border-slate-400 hover:bg-slate-300">
+            <TableCell><Icons category={category}/></TableCell>
             <TableCell>{name}</TableCell>
             <TableCell>{created}</TableCell>
             <TableCell>{category}</TableCell>
