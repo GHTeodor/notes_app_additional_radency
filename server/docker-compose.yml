@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15.3-alpine
+    restart: on-failure
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./postgres-init.sql:/docker-entrypoint-initdb.d/postgres_db_init.sql
+    ports:
+      - '5433:5432'
+
+  app:
+    build:
+      context: .
+    ports:
+      - '5500:5200'
+    depends_on:
+      - db
+    volumes:
+      - ./src:/app/src
+    restart: on-failure
+
+  pgadmin:
+    image: dpage/pgadmin4:7.5
+    restart: on-failure
+    container_name: nest-pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+    ports:
+      - '5050:80'
+    depends_on:
+      - db
+volumes:
+  pgdata:
